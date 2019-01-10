@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/step_main_scroll_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:id="@+id/step_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/step_exoplayer_view"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/default_step_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/chef"
+            android:background="@android:color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/step_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:layout_margin="10dp"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:background="@drawable/rectangle_shape_white"/>
+
+    </LinearLayout>
+
+</ScrollView>
