@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apoorvdubey.bakeit.R;
@@ -33,6 +35,7 @@ import com.example.apoorvdubey.bakeit.viewmodel.RecipeListViewModel;
 import com.example.apoorvdubey.bakeit.viewmodel.StepsListViewModel;
 import com.example.apoorvdubey.bakeit.viewmodel.StepsListViewModelFactory;
 import com.example.apoorvdubey.bakeit.widget.AppWidgetService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
 
     TabLayout tabLayout;
     Toolbar toolbar;
+    TextView textViewToolbar;
+    ImageView imageView;
     TabItem tabIngredient,tabSteps;
     ViewPager viewPager;
     PageAdapter pageAdapter;
@@ -75,13 +80,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     }
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.app_name));
+        imageView=findViewById(R.id.recipe_image_toolbar);
+        textViewToolbar= findViewById(R.id.toolbar_text);
+        //toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
         tabLayout = findViewById(R.id.tablayout);
         tabIngredient = findViewById(R.id.ingredient_tab);
         tabSteps = findViewById(R.id.steps_tab);
         viewPager = findViewById(R.id.viewPager);
         pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),setIntentValues());
+        setToolBarImage();
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -100,6 +108,27 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
             }
         });
         viewPager.setAdapter(pageAdapter);
+    }
+
+    private void setToolBarImage() {
+        switch (response.getId()){
+            case 1:
+                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_1));
+                textViewToolbar.setText(response.getName());
+                break;
+            case 2:
+                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_2));
+                textViewToolbar.setText(response.getName());
+                break;
+            case 3:
+                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_3));
+                textViewToolbar.setText(response.getName());
+                break;
+            case 4:
+                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_4));
+                textViewToolbar.setText(response.getName());
+                break;
+        }
     }
 
     private Bundle setIntentValues() {

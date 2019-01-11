@@ -51,8 +51,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 case 1:
                     Picasso.with(context)
                             .load(R.drawable.no_image_1)
-                            .fit()
                             .centerCrop()
+                            .fit()
                             .into(holder.recipeImage);
                     break;
                 case 2:
