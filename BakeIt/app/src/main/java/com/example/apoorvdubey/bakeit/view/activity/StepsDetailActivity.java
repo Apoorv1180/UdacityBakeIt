@@ -77,7 +77,6 @@ public class StepsDetailActivity extends AppCompatActivity {
                 if (null != activityListener) {
                     activityListener.doSomethingInFragment(position);
                 }
-
             }
 
             @Override
@@ -90,10 +89,7 @@ public class StepsDetailActivity extends AppCompatActivity {
                 Log.e("tagg","yeye");
 
             }
-
-
         });
         viewPager.setCurrentItem(position);
     }
-
 }

@@ -3,6 +3,7 @@ package com.example.apoorvdubey.bakeit.view.activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabItem;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apoorvdubey.bakeit.R;
+import com.example.apoorvdubey.bakeit.Utils.Prefs;
 import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 import com.example.apoorvdubey.bakeit.service.model.RecipeResponse;
 import com.example.apoorvdubey.bakeit.service.model.Step;
@@ -45,7 +47,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     TabLayout tabLayout;
     Toolbar toolbar;
     TextView textViewToolbar;
-    ImageView imageView;
     TabItem tabIngredient,tabSteps;
     ViewPager viewPager;
     PageAdapter pageAdapter;
@@ -80,7 +81,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     }
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
-        imageView=findViewById(R.id.recipe_image_toolbar);
         textViewToolbar= findViewById(R.id.toolbar_text);
         //toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
@@ -95,11 +95,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                setToolBarImage();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                setToolBarImage();
             }
 
             @Override
@@ -113,19 +114,19 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     private void setToolBarImage() {
         switch (response.getId()){
             case 1:
-                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_1));
+                toolbar.setBackground(getResources().getDrawable(R.drawable.no_image_1));
                 textViewToolbar.setText(response.getName());
                 break;
             case 2:
-                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_2));
+                toolbar.setBackground(getResources().getDrawable(R.drawable.no_image_2));
                 textViewToolbar.setText(response.getName());
                 break;
             case 3:
-                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_3));
+                toolbar.setBackground(getResources().getDrawable(R.drawable.no_image_3));
                 textViewToolbar.setText(response.getName());
                 break;
             case 4:
-                imageView.setBackground(getResources().getDrawable(R.drawable.no_image_4));
+                toolbar.setBackground(getResources().getDrawable(R.drawable.no_image_4));
                 textViewToolbar.setText(response.getName());
                 break;
         }
@@ -140,7 +141,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
             response = getIntent().getParcelableExtra("recipeObjectAW");
         }else {
             //do nothing
+            response=Prefs.loadRecipe(this);
         }
+
         bundle.putInt("recipeId",response.getId());
         toolbar.setTitle(response.getName());
         return  bundle;
@@ -171,5 +174,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
             return true;
         } else
             return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
     }
 }

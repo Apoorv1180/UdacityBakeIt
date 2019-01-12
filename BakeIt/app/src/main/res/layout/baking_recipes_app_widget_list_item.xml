@@ -7,5 +7,5 @@
     android:layout_marginBottom="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
     android:gravity="center_vertical"
-    android:textColor="@android:color/white"
+    android:textColor="@color/colorAccent"
     android:textSize="@dimen/text_medium" />

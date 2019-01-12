@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_medium"
         android:text="@string/na"
-        android:textColor="@color/colorAccent"
+        android:textColor="@android:color/holo_green_light"
         android:textSize="@dimen/text_extra_large" />
 
     <ListView
@@ -20,7 +20,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_medium"
         android:layout_weight="1"
-        android:divider="@android:color/white"
+        android:divider="@color/colorPrimaryDark"
         android:dividerHeight="1dp" />
 
 </LinearLayout>

@@ -44,7 +44,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         if (mData.get(position).getShortDescription() == null)
             holder.recipeShortDescription.setText(R.string.na);
         else
-            holder.recipeShortDescription.setText(String.valueOf(mData.get(position).getShortDescription()));
+            holder.recipeShortDescription.setText("\u2022 Bullet"+" "+String.valueOf(mData.get(position).getShortDescription()));
     }
 
     @Override

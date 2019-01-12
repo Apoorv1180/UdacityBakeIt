@@ -1,8 +1,9 @@
 package com.example.apoorvdubey.bakeit.view.adapter;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.apoorvdubey.bakeit.service.model.Step;
@@ -13,7 +14,7 @@ public class PageAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
     Bundle bundle;
 
-    public PageAdapter(FragmentManager fm, int numOfTabs, Bundle bundle) {
+    public PageAdapter(android.support.v4.app.FragmentManager fm, int numOfTabs, Bundle bundle) {
         super(fm);
         this.numOfTabs = numOfTabs;
         this.bundle= bundle;

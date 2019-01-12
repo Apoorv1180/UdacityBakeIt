@@ -3,6 +3,7 @@ package com.example.apoorvdubey.bakeit.view.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             holder.recipeServings.setText(R.string.na);
         else
             holder.recipeServings.setText("Servings: "+String.valueOf(mData.get(position).getServings()));
-        if(mData.get(position).getImage()==null || mData.get(position).getImage()=="" ){
+        if(mData.get(position).getImage()==null || mData.get(position).getImage()=="" || TextUtils.isEmpty(mData.get(position).getImage())){
             switch (mData.get(position).getId()){
                 case 1:
                     Picasso.with(context)

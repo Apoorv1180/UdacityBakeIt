@@ -38,7 +38,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         if (mData.get(position).getIngredient() == null)
             holder.ingredientName.setText(R.string.na);
         else
-            holder.ingredientName.setText(mData.get(position).getIngredient().toString());
+            holder.ingredientName.setText("\u2022 Bullet"+" "+mData.get(position).getIngredient().toString());
 
     }
 

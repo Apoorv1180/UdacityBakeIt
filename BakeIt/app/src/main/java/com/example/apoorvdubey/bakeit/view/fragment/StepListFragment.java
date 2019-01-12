@@ -1,14 +1,18 @@
 package com.example.apoorvdubey.bakeit.view.fragment;
 
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -35,6 +40,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static android.view.View.GONE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,19 +96,31 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
         unbinder = ButterKnife.bind(this, rootView);
 
         mTvInstructions.setText(mStep.getDescription());
-
-        // Show thumbnail if url exists
-            if (!mStep.getThumbnailURL().isEmpty()) {
-                Picasso.with(getActivity())
-                        .load(mStep.getThumbnailURL())
-                        .placeholder(R.drawable.chef)
-                        .error(R.drawable.chef)
-                        .into(mIvThumbnail);
-
-                mIvThumbnail.setVisibility(View.VISIBLE);
-            }
+        setupImageView();
 
         return rootView;
+    }
+
+    private void setupImageView() {
+        mIvThumbnail.setVisibility(View.VISIBLE);
+        if(mStep.getThumbnailURL().isEmpty() || mStep.getThumbnailURL().equals("") || mStep.getThumbnailURL() == null){
+            mInstructionsContainer.setVisibility(View.VISIBLE);
+            Picasso.with(getActivity())
+                    .load(R.drawable.chef)
+                    .placeholder(R.drawable.chef)
+                    .error(R.drawable.chef)
+                    .into(mIvThumbnail);
+        }
+
+        // Show thumbnail if url exists
+        else {
+            Picasso.with(getActivity())
+                    .load(mStep.getThumbnailURL())
+                    .placeholder(R.drawable.chef)
+                    .error(R.drawable.chef)
+                    .into(mIvThumbnail);
+
+        }
     }
 
     @Override
@@ -113,17 +132,19 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             // Un- hide InstructionsContainer because in case of phone landscape is hidden
             mInstructionsContainer.setVisibility(View.VISIBLE);
         }
-        if(isVisible()) {
-            if (!mStep.getThumbnailURL().isEmpty()) {
-                Picasso.with(getActivity())
-                        .load(mStep.getThumbnailURL())
-                        .placeholder(R.drawable.chef)
-                        .error(R.drawable.chef)
-                        .into(mIvThumbnail);
 
-                mIvThumbnail.setVisibility(View.VISIBLE);
-            }
-        }
+        String orientation = getScreenOrientation();
+        if(orientation.equals("ORIENTATION_LANDSCAPE")){
+            if(mExoPlayer!=null){
+            mInstructionsContainer.setVisibility(GONE);
+            mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mExoPlayerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=params.MATCH_PARENT;
+            mExoPlayerView.setLayoutParams(params);
+        }}
+
+
     }
 
     @Override
@@ -208,6 +229,11 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
 
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Toast.makeText(getActivity(),"yoyo",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void doSomethingInFragment(int position) {
@@ -221,9 +247,14 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
                 mExoPlayer = null;
             }
         }
-        else {
-            Toast.makeText(getActivity(),"on stdoop " + position,Toast.LENGTH_SHORT).show();
+    }
 
-        }
+    private String getScreenOrientation() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            return "ORIENTATION_PORTRAIT";
+        else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            return "ORIENTATION_LANDSCAPE";
+        else
+            return "";
     }
 }
