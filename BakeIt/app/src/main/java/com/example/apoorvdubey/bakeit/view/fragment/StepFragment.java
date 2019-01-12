@@ -26,8 +26,12 @@
     import java.util.ArrayList;
     import java.util.List;
 
+    import butterknife.BindView;
+    import butterknife.ButterKnife;
+
     public class StepFragment extends Fragment implements StepAdapter.ItemClickListener {
         int id=0;
+        @BindView(R.id.step_recycler_view)
         RecyclerView recyclerView;
         RecyclerView.LayoutManager layoutManager;
         StepAdapter adapter;
@@ -54,7 +58,7 @@
             return root;    }
 
         private void setView(View root) {
-            recyclerView = root.findViewById(R.id.step_recycler_view);
+            ButterKnife.bind(this,root);
             layoutManager= new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
             adapter= new StepAdapter(getActivity(),stepArrayList);
@@ -65,7 +69,6 @@
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            Log.e("ID",id+"");
             final StepsListViewModel viewModelStep =
                     ViewModelProviders.of(this, new StepsListViewModelFactory(getActivity().getApplication(),id))
                             .get(StepsListViewModel.class);
@@ -96,10 +99,8 @@
             });
         }
 
-
         @Override
         public void onItemClick(View view, int position) {
             mCallback.onArticleSelected(position, stepArrayList);
         }
-
     }

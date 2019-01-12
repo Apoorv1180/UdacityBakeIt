@@ -53,8 +53,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
 
     @BindView(R.id.instructions_container)
     NestedScrollView mInstructionsContainer;
-
-
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.step_thumbnail_image)
@@ -119,7 +117,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
                     .placeholder(R.drawable.chef)
                     .error(R.drawable.chef)
                     .into(mIvThumbnail);
-
         }
     }
 
@@ -132,7 +129,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             // Un- hide InstructionsContainer because in case of phone landscape is hidden
             mInstructionsContainer.setVisibility(View.VISIBLE);
         }
-
         String orientation = getScreenOrientation();
         if(orientation.equals("ORIENTATION_LANDSCAPE")){
             if(mExoPlayer!=null){
@@ -176,10 +172,8 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-
             // Create the player
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-
             // Bind the player to the view.
             mExoPlayerView.setPlayer(mExoPlayer);
             // Measures bandwidth during playback. Can be null if not required.
@@ -189,7 +183,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
             // Prepare the player with the source.
             mExoPlayer.prepare(videoSource);
-
             // onRestore
             if (mCurrentPosition != 0)
                 mExoPlayer.seekTo(mCurrentPosition);

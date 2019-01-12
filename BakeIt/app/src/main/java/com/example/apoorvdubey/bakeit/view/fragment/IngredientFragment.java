@@ -24,11 +24,15 @@ import com.example.apoorvdubey.bakeit.viewmodel.IngredientListViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IngredientFragment extends Fragment implements IngredientAdapter.ItemClickListener {
+public class IngredientFragment extends Fragment {
     int id=0;
+    @BindView(R.id.ingredients_list)
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     IngredientAdapter adapter;
@@ -59,12 +63,11 @@ public void onCreate(@Nullable Bundle savedInstanceState) {
     }
 
     private void setView(View root) {
-        recyclerView = root.findViewById(R.id.ingredients_list);
+        ButterKnife.bind(this,root);
         layoutManager= new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter= new IngredientAdapter(getActivity(),ingredientArrayList);
         recyclerView.setAdapter(adapter);
-        adapter.setClickListener(this);
     }
 
     @Override
@@ -91,10 +94,5 @@ public void onCreate(@Nullable Bundle savedInstanceState) {
                 }
             }
         });
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-
     }
 }

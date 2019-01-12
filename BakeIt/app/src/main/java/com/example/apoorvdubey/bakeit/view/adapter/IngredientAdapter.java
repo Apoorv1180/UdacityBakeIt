@@ -18,7 +18,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     private List<Ingredient> mData;
     private LayoutInflater mInflater;
     private Context context;
-    private ItemClickListener mClickListener;
 
     public IngredientAdapter(Context context, List<Ingredient> result) {
         this.mInflater = LayoutInflater.from(context);
@@ -47,27 +46,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         return mData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
         TextView ingredientName;
 
         ViewHolder(View itemView) {
             super(itemView);
             ingredientName = itemView.findViewById(R.id.ingredient_name);
-            itemView.setOnClickListener(this);
         }
-
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-
-    }
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }
