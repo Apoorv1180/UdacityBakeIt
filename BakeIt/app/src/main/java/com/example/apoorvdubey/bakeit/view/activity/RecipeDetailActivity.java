@@ -42,12 +42,23 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlineSelectedListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlineSelectedListener {
+    @BindView(R.id.tablayout)
     TabLayout tabLayout;
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_text)
     TextView textViewToolbar;
-    TabItem tabIngredient,tabSteps;
+    @Nullable
+    @BindView(R.id.ingredient_tab_item)
+    TabItem tabIngredient;
+    @BindView(R.id.steps_tab)
+    @Nullable
+    TabItem tabSteps;
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
     PageAdapter pageAdapter;
     RecipeResponse response;
@@ -56,40 +67,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         initView();
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 1) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(RecipeDetailActivity.this,
-                            R.color.colorPrimary));}
-                else {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(RecipeDetailActivity.this,
-                            R.color.colorPrimary));
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
     private void initView() {
-        toolbar = findViewById(R.id.toolbar);
-        textViewToolbar= findViewById(R.id.toolbar_text);
-        //toolbar.setTitle(getResources().getString(R.string.app_name));
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        tabLayout = findViewById(R.id.tablayout);
-        tabIngredient = findViewById(R.id.ingredient_tab);
-        tabSteps = findViewById(R.id.steps_tab);
-        viewPager = findViewById(R.id.viewPager);
         pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),setIntentValues());
         setToolBarImage();
+        setViewPagerListeners();
+    }
+
+    private void setViewPagerListeners() {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -105,7 +92,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
         viewPager.setAdapter(pageAdapter);
@@ -140,10 +126,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
             bundle = getIntent().getBundleExtra("recipeAW");
             response = getIntent().getParcelableExtra("recipeObjectAW");
         }else {
-            //do nothing
             response=Prefs.loadRecipe(this);
         }
-
         bundle.putInt("recipeId",response.getId());
         toolbar.setTitle(response.getName());
         return  bundle;
@@ -179,6 +163,5 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
     }
 }
