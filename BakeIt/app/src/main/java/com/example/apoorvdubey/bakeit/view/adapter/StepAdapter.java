@@ -14,6 +14,9 @@ import com.example.apoorvdubey.bakeit.service.model.Step;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
     private List<Step> mData;
@@ -53,13 +56,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.desc_step)
         TextView stepDescription;
+        @BindView(R.id.short_desc_step)
         TextView recipeShortDescription;
 
         ViewHolder(View itemView) {
             super(itemView);
-            stepDescription = itemView.findViewById(R.id.desc_step);
-            recipeShortDescription = itemView.findViewById(R.id.short_desc_step);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
 

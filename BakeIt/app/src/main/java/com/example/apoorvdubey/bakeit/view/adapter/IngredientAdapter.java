@@ -13,6 +13,9 @@ import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
     private List<Ingredient> mData;
@@ -47,11 +50,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
+        @BindView(R.id.ingredient_name)
         TextView ingredientName;
 
         ViewHolder(View itemView) {
             super(itemView);
-            ingredientName = itemView.findViewById(R.id.ingredient_name);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

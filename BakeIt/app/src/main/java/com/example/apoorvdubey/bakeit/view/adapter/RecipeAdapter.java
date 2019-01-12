@@ -16,6 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<RecipeResponse> mData;
@@ -93,15 +96,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.recipe_name)
         TextView recipeName;
+        @BindView(R.id.recipe_servings)
         TextView recipeServings;
+        @BindView(R.id.recipe_image)
         ImageView recipeImage;
 
         ViewHolder(View itemView) {
             super(itemView);
-            recipeName = itemView.findViewById(R.id.recipe_name);
-            recipeServings = itemView.findViewById(R.id.recipe_servings);
-            recipeImage = itemView.findViewById(R.id.recipe_image);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
 
