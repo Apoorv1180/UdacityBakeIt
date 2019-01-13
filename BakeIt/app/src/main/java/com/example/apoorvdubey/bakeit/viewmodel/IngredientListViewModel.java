@@ -8,9 +8,10 @@ import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 import com.example.apoorvdubey.bakeit.service.repository.DataRepository;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class IngredientListViewModel extends AndroidViewModel {
-    private final LiveData<List<Ingredient>> ingredientListObservable;
+    private LiveData<List<Ingredient>> ingredientListObservable;
 
     DataRepository dataRepository;
 
@@ -18,7 +19,13 @@ public class IngredientListViewModel extends AndroidViewModel {
         super(application);
 
         dataRepository = DataRepository.getInstance(application);
-        ingredientListObservable = DataRepository.getInstance(application).getIngredientsList(mParam);
+        try {
+            ingredientListObservable = DataRepository.getInstance(application).getIngredientsList(mParam);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public LiveData<List<Ingredient>> getIngredientObservable() {

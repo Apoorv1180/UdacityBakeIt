@@ -12,8 +12,7 @@ public class RecipeListViewModel extends AndroidViewModel {
     private final LiveData<List<RecipeResponse>> recipeListObservable;
     DataRepository dataRepository;
 
-    public RecipeListViewModel(Application
-                                       application) {
+    public RecipeListViewModel(Application application) {
         super(application);
 
         dataRepository = DataRepository.getInstance(application);

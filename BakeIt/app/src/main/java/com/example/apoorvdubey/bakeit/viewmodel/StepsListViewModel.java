@@ -8,9 +8,10 @@ import com.example.apoorvdubey.bakeit.service.model.Step;
 import com.example.apoorvdubey.bakeit.service.repository.DataRepository;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class StepsListViewModel extends AndroidViewModel {
-    private final LiveData<List<Step>> stepsListObservable;
+    private LiveData<List<Step>> stepsListObservable;
 
     DataRepository dataRepository;
 
@@ -18,7 +19,13 @@ public class StepsListViewModel extends AndroidViewModel {
         super(application);
 
         dataRepository = DataRepository.getInstance(application);
-        stepsListObservable = DataRepository.getInstance(application).getStepsList(mParam);
+        try {
+            stepsListObservable = DataRepository.getInstance(application).getStepsList(mParam);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public LiveData<List<Step>> getStepsListObservable() {

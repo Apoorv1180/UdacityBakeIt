@@ -21,6 +21,7 @@ import com.example.apoorvdubey.bakeit.service.network.GetRecipeApiService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,7 +83,13 @@ public class DataRepository {
                 }
             });
         } else {
-            return recipeResponseDao.loadAllRecipes();
+            try {
+                return loadAllRecipes();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return data;
     }
@@ -94,8 +101,14 @@ public class DataRepository {
             steps.get(i).setRecipeId(recipeResponse.getId());
         }
         for (int i = 0; i < steps.size(); i++) {
-            if (steps.size() != stepsDao.getStepsCount(recipeId)) {
-                insertStep(steps.get(i));
+            try {
+                if (steps.size() != getStepsCount(stepsDao,recipeId)) {
+                    insertStep(steps.get(i));
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -107,20 +120,17 @@ public class DataRepository {
             ingredients.get(i).setRecipeId(recipeResponse.getId());
         }
         for (int i = 0; i < ingredients.size(); i++) {
-            if (ingredients.size() != ingredientsDao.getIngredientCount(recipeId)) {
-                insertIngredients(ingredients.get(i));
+            try {
+                if (ingredients.size() != getIngredientsCount(ingredientsDao,recipeId)) {
+                    insertIngredients(ingredients.get(i));
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
-
-    public LiveData<List<Ingredient>> getIngredientsList(Integer id) {
-        return ingredientsDao.loadAllIngredients(id);
-    }
-
-    public LiveData<List<Step>> getStepsList(Integer id) {
-        return stepsDao.loadAllSteps(id);
-    }
-
     public void insertRecipe(RecipeResponse result) {
         new InsertRecipeAsynTask(recipeResponseDao).execute(result);
     }
@@ -132,9 +142,34 @@ public class DataRepository {
     public void insertIngredients(Ingredient result) {
         new insertIngredientsAsynTask(ingredientsDao).execute(result);
     }
+    public LiveData<List<Ingredient>> getIngredientsList(Integer id) throws ExecutionException,InterruptedException {
+       // return ingredientsDao.loadAllIngredients(id);
+        return new getIngredientsAsyncTask(ingredientsDao,id).execute().get();
+
+    }
+
+    public int getIngredientsCount(IngredientsDao ingredientdDao,Integer id) throws ExecutionException,InterruptedException {
+        // return ingredientsDao.loadAllIngredients(id);
+        return new getIngredientsCountAsyncTask(ingredientsDao,id).execute().get();
+
+    }
+    public int getStepsCount(StepsDao stepsDao,Integer id) throws ExecutionException,InterruptedException {
+        // return ingredientsDao.loadAllIngredients(id);
+        return new getStepsCountAsyncTask(stepsDao,id).execute().get();
+
+    }
+
+    public LiveData<List<Step>> getStepsList(Integer id) throws ExecutionException,InterruptedException {
+       // return stepsDao.loadAllSteps(id);
+        return new getStepsListAsyncTask(stepsDao,id).execute().get();
+    }
 
     public void insertStep(Step result) {
         new InsertStepsAsynTask(stepsDao).execute(result);
+    }
+
+    public LiveData<List<RecipeResponse>> loadAllRecipes() throws ExecutionException, InterruptedException {
+        return new LoadAllRecipes(recipeResponseDao).execute().get();
     }
 
     private static class InsertRecipeAsynTask extends AsyncTask<RecipeResponse, Void, Void> {
@@ -192,6 +227,77 @@ public class DataRepository {
         protected Void doInBackground(Step... detailResults) {
             stepsDao.insertSteps(detailResults[0]);
             return null;
+        }
+    }
+
+    private static class LoadAllRecipes extends AsyncTask<Void, Void, LiveData<List<RecipeResponse>>> {
+
+        private RecipeResponseDao mAsyncTaskDao;
+        MutableLiveData<List<RecipeResponse>> a;
+
+        LoadAllRecipes(RecipeResponseDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected LiveData<List<RecipeResponse>> doInBackground(Void... voids) {
+            return mAsyncTaskDao.loadAllRecipes();
+        }
+    }
+
+    private static class getStepsListAsyncTask extends AsyncTask<Void,Void,LiveData<List<Step>>>{
+        int id;
+        StepsDao stepsDao;
+        public getStepsListAsyncTask(StepsDao stepsDao, Integer id) {
+            this.stepsDao=stepsDao;
+            this.id=id;
+        }
+
+        @Override
+        protected LiveData<List<Step>> doInBackground(Void... voids) {
+            return stepsDao.loadAllSteps(id);
+        }
+    }
+
+    private class getIngredientsAsyncTask extends AsyncTask<Void,Void,LiveData<List<Ingredient>>>{
+        int id;
+        IngredientsDao ingredientsDao;
+        public getIngredientsAsyncTask(IngredientsDao ingredientsDao, Integer id) {
+        this.ingredientsDao=ingredientsDao;
+        this.id=id;
+        }
+
+        @Override
+        protected LiveData<List<Ingredient>> doInBackground(Void... voids) {
+            return ingredientsDao.loadAllIngredients(id);
+        }
+    }
+
+    private class getIngredientsCountAsyncTask extends AsyncTask<Void,Void,Integer> {
+        int id ;
+        IngredientsDao ingredientsDao;
+        public getIngredientsCountAsyncTask(IngredientsDao ingredientsDao, Integer id) {
+            this.ingredientsDao=ingredientsDao;
+            this.id=id;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return ingredientsDao.getIngredientCount(id);
+        }
+    }
+
+    private class getStepsCountAsyncTask extends AsyncTask<Void,Void,Integer> {
+        int id;
+        StepsDao stepsDao;
+        public getStepsCountAsyncTask(StepsDao stepsDao, Integer id) {
+        this.stepsDao=stepsDao;
+        this.id=id;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return stepsDao.getStepsCount(id);
         }
     }
 }
