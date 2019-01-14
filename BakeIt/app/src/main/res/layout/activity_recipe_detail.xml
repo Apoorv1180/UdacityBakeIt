@@ -62,4 +62,12 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/tablet_step_list_fragment_container">
+
+    </FrameLayout>
 </LinearLayout>

@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 import com.example.apoorvdubey.bakeit.service.model.RecipeResponse;
 import com.example.apoorvdubey.bakeit.service.model.Step;
 import com.example.apoorvdubey.bakeit.view.adapter.PageAdapter;
+import com.example.apoorvdubey.bakeit.view.callbacks.ListenFromActivity;
 import com.example.apoorvdubey.bakeit.view.callbacks.OnHeadlineSelectedListener;
 import com.example.apoorvdubey.bakeit.view.fragment.StepListFragment;
 import com.example.apoorvdubey.bakeit.viewmodel.IngredientListViewModel;
@@ -60,13 +63,25 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     TabItem tabSteps;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.tablet_step_list_fragment_container)
+    FrameLayout frameLayout;
     PageAdapter pageAdapter;
-    RecipeResponse response;
+    RecipeResponse response,selectedResponse;
+    int positionSelected;
+    boolean tabletSize;
+    public ListenFromActivity activityListener;
+
+    public void setActivityListener(ListenFromActivity activityListener) {
+        this.activityListener = activityListener;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         initView();
+        setActivityListener(activityListener);
+        tabletSize = getResources().getBoolean(R.bool.is_tablet);
     }
     private void initView() {
         ButterKnife.bind(this);
@@ -135,12 +150,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
 
     @Override
     public void onArticleSelected(int position, List<Step> response) {
+        if(!tabletSize){
         Intent intent = new Intent(this,StepsDetailActivity.class);
         intent.putExtra("position",position);
         intent.putExtra("response",response.get(position));
         intent.putExtra("recipeId",response.get(position).getRecipeId());
         intent.putExtra("list", (ArrayList<? extends Parcelable>) response);
-        startActivity(intent);
+        startActivity(intent);}
+        else{
+            frameLayout.setVisibility(View.VISIBLE);
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(StepListFragment.STEP_KEY, response.get(position));
+            StepListFragment fragment = new StepListFragment();
+            fragment.setArguments(arguments);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.tablet_step_list_fragment_container, fragment, "STEP_LIST_CONTAINER");
+            ft.commit();
+        }
     }
 
     @Override
@@ -163,5 +189,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+     if(tabletSize){
+      Log.e("config","changed");
+     }
     }
 }

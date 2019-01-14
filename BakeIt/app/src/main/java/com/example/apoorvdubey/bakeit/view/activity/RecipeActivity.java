@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,13 +32,16 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
     Toolbar toolbar;
     RecipeAdapter recipeAdapter;
     RecyclerView.LayoutManager layoutManager;
+    GridLayoutManager gridLayoutManager;
     List<RecipeResponse> recipeResponseList = new ArrayList<>();
+    boolean tabletSize;
     public static boolean mTabletLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
+        tabletSize = getResources().getBoolean(R.bool.is_tablet);
         setToolBar();
         setRecyclerView();
         setViewModel();
@@ -57,9 +61,17 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
     }
 
     private void setRecyclerView() {
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recipeAdapter= new RecipeAdapter(this,recipeResponseList);
+        if(!tabletSize) {
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+
+        }
+        else{
+            gridLayoutManager = new GridLayoutManager(this, 2);
+            recyclerView.setLayoutManager(gridLayoutManager);
+        }
+
+        recipeAdapter = new RecipeAdapter(this, recipeResponseList);
         recipeAdapter.setClickListener(this);
         recyclerView.setAdapter(recipeAdapter);
     }

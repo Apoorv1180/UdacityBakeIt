@@ -21,8 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.RecipeDetailActivity"
+            android:parentActivityName=".view.activity.RecipeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".view.activity.StepsDetailActivity" />
+        <activity android:name=".view.activity.StepsDetailActivity"
+            android:parentActivityName=".view.activity.StepsDetailActivity"/>
         <receiver android:name=".widget.AppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
