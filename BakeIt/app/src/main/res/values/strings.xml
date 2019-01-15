@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">BakeIt</string>
     <string name="hello_blank_fragment">hello tab 1</string>
     <string name="na">NA</string>
@@ -8,4 +8,29 @@
     <string name="widget_recipe_key">widget_recipe</string>
     <string name="add_to_widget">ADD TO WIDGET</string>
     <string name="recipeObject">recipeObject</string>
+    <string name="recipe_object">recipeObject</string>
+    <string name="recipe_android_widget">recipeAW</string>
+    <string name="recipe_object_android_widget">recipeObjectAW</string>
+    <string name="recipe_id">recipeId</string>
+    <string name="position">position</string>
+    <string name="response">response</string>
+    <string name="list">list</string>
+    <string name="step_list_container">STEP_LIST_CONTAINER</string>
+    <string name="Updated_Widget">Updated Widget</string>
+    <string name="res_id">responseId</string>
+    <string name="recipId">recipeId</string>
+    <string name="lsit">list</string>
+    <string name="Step">Step</string>
+    <string name="servings">Servings:</string>
+    <string name="bullet" tools:ignore="ExtraTranslation">• Bullet</string>
+    <string name="recId">recipeId</string>
+    <string name="recid">recipeId</string>
+    <string name="landscape">ORIENTATION_LANDSCAPE</string>
+    <string name="orientation_portrait">ORIENTATION_PORTRAIT</string>
+    <string name="orientation_landscape">ORIENTATION_LANDSCAPE</string>
+    <string name="recipe_widget">recipeAW</string>
+    <string name="recipe_object_widget">recipeObjectAW</string>
+    <string name="ingredients" tools:ignore="ExtraTranslation">INGREDIENTS</string>
+    <string name="steps">STEPS</string>
+    <string name="recipes_not_available">Recipes Not Available</string>
 </resources>

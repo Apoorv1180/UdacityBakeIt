@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.apoorvdubey.bakeit.R;
-import com.example.apoorvdubey.bakeit.service.model.RecipeResponse;
 import com.example.apoorvdubey.bakeit.service.model.Step;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         if (mData.get(position).getShortDescription() == null)
             holder.recipeShortDescription.setText(R.string.na);
         else
-            holder.recipeShortDescription.setText("\u2022 Bullet"+" "+String.valueOf(mData.get(position).getShortDescription()));
+            holder.recipeShortDescription.setText(context.getString(R.string.bullet)+" "+String.valueOf(mData.get(position).getShortDescription()));
     }
 
     @Override
@@ -66,7 +65,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
             ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View view) {

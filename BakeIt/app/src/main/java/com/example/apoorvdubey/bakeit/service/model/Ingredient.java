@@ -15,7 +15,6 @@ import com.google.gson.annotations.SerializedName;
         parentColumns = "id",
         childColumns = "recipeId"))
 public class Ingredient implements Parcelable{
-
     @SerializedName("quantity")
     @Expose
     private float quantity;
@@ -30,7 +29,6 @@ public class Ingredient implements Parcelable{
     public Integer ingredientId;
     @ColumnInfo(name = "recipeId")
     public Integer recipeId;
-
 
     protected Ingredient(Parcel in) {
         quantity = in.readFloat();

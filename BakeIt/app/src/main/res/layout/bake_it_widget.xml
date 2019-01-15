@@ -21,6 +21,6 @@
         android:layout_margin="@dimen/margin_medium"
         android:layout_weight="1"
         android:divider="@color/colorPrimaryDark"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="@dimen/one_dp" />
 
 </LinearLayout>

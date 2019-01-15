@@ -5,23 +5,17 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Base64;
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity(tableName = "RecipeResponse")
-public class  RecipeResponse implements Parcelable ,Serializable {
+public class RecipeResponse implements Parcelable, Serializable {
     @PrimaryKey(autoGenerate = false)
     @SerializedName("id")
     @Expose
@@ -156,35 +150,30 @@ public class  RecipeResponse implements Parcelable ,Serializable {
     }
 
     public static String toBase64String(RecipeResponse recipe) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            return Base64.encodeToString(mapper.writeValueAsBytes(recipe), 0);
-//        } catch (JsonProcessingException e) {
-//            Log.e("error",e.getMessage());
-//        }
         Gson gson = new Gson();
-        String json="";
+        String json = "";
         try {
             json = gson.toJson(recipe);
 
-        }catch (Exception e){
-            Log.e("error",e.getMessage());
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
         }
         return json;
     }
 
     public static RecipeResponse fromBase64(String encoded) {
         Gson g = new Gson();
-        RecipeResponse p=null;
+        RecipeResponse p = null;
         try {
-             p = g.fromJson(encoded, RecipeResponse.class);
-            Log.e("error",p.toString());
+            p = g.fromJson(encoded, RecipeResponse.class);
+            Log.e("error", p.toString());
 
-        } catch (Exception e){
-            Log.e("error",e.getMessage());
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
         }
         return p;
     }
+
     @Override
     public int describeContents() {
         return 0;

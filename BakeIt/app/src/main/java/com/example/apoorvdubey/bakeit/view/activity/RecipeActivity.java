@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.apoorvdubey.bakeit.R;
 import com.example.apoorvdubey.bakeit.service.model.RecipeResponse;
@@ -30,12 +31,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.empty_text_view)
+    TextView emptyTextView;
     RecipeAdapter recipeAdapter;
     RecyclerView.LayoutManager layoutManager;
     GridLayoutManager gridLayoutManager;
     List<RecipeResponse> recipeResponseList = new ArrayList<>();
     boolean tabletSize;
-    public static boolean mTabletLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
         final RecipeListViewModel viewModel =
                 ViewModelProviders.of(this, new RecipeListViewModelFactory(this.getApplication()))
                         .get(RecipeListViewModel.class);
-
         observeViewModel(viewModel);
     }
 
@@ -64,13 +66,11 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
         if(!tabletSize) {
             layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
-
         }
         else{
             gridLayoutManager = new GridLayoutManager(this, 2);
             recyclerView.setLayoutManager(gridLayoutManager);
         }
-
         recipeAdapter = new RecipeAdapter(this, recipeResponseList);
         recipeAdapter.setClickListener(this);
         recyclerView.setAdapter(recipeAdapter);
@@ -84,6 +84,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
                     if (result.size() != 0){
                         recipeResponseList.addAll(result);
                         recipeAdapter.notifyDataSetChanged();
+                        recyclerView.setVisibility(View.VISIBLE);
+                        emptyTextView.setVisibility(View.GONE);
+                    }
+                    else{
+                        emptyTextView.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                 }
             }

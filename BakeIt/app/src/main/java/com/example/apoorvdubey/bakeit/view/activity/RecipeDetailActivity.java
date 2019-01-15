@@ -1,46 +1,33 @@
 package com.example.apoorvdubey.bakeit.view.activity;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apoorvdubey.bakeit.R;
 import com.example.apoorvdubey.bakeit.Utils.Prefs;
-import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 import com.example.apoorvdubey.bakeit.service.model.RecipeResponse;
 import com.example.apoorvdubey.bakeit.service.model.Step;
 import com.example.apoorvdubey.bakeit.view.adapter.PageAdapter;
 import com.example.apoorvdubey.bakeit.view.callbacks.ListenFromActivity;
 import com.example.apoorvdubey.bakeit.view.callbacks.OnHeadlineSelectedListener;
 import com.example.apoorvdubey.bakeit.view.fragment.StepListFragment;
-import com.example.apoorvdubey.bakeit.viewmodel.IngredientListViewModel;
-import com.example.apoorvdubey.bakeit.viewmodel.IngredientListViewModelFactory;
-import com.example.apoorvdubey.bakeit.viewmodel.RecipeListViewModel;
-import com.example.apoorvdubey.bakeit.viewmodel.StepsListViewModel;
-import com.example.apoorvdubey.bakeit.viewmodel.StepsListViewModelFactory;
 import com.example.apoorvdubey.bakeit.widget.AppWidgetService;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +53,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     @BindView(R.id.tablet_step_list_fragment_container)
     FrameLayout frameLayout;
     PageAdapter pageAdapter;
-    RecipeResponse response,selectedResponse;
-    int positionSelected;
+    RecipeResponse response;
     boolean tabletSize;
     public ListenFromActivity activityListener;
 
@@ -83,10 +69,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
         setActivityListener(activityListener);
         tabletSize = getResources().getBoolean(R.bool.is_tablet);
     }
+
     private void initView() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),setIntentValues());
+        pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), setIntentValues());
         setToolBarImage();
         setViewPagerListeners();
     }
@@ -113,7 +100,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     }
 
     private void setToolBarImage() {
-        switch (response.getId()){
+        switch (response.getId()) {
             case 1:
                 toolbar.setBackground(getResources().getDrawable(R.drawable.no_image_1));
                 textViewToolbar.setText(response.getName());
@@ -135,36 +122,36 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
 
     private Bundle setIntentValues() {
         Bundle bundle = new Bundle();
-        if(getIntent().hasExtra("recipeObject"))
-        response=(RecipeResponse)getIntent().getParcelableExtra("recipeObject");
-        else if(getIntent().hasExtra("recipeAW")) {
-            bundle = getIntent().getBundleExtra("recipeAW");
-            response = getIntent().getParcelableExtra("recipeObjectAW");
-        }else {
-            response=Prefs.loadRecipe(this);
+        if (getIntent().hasExtra(getString(R.string.recipe_object)))
+            response = (RecipeResponse) getIntent().getParcelableExtra(getString(R.string.recipe_object));
+        else if (getIntent().hasExtra(getString(R.string.recipe_android_widget))) {
+            bundle = getIntent().getBundleExtra(getString(R.string.recipe_android_widget));
+            response = getIntent().getParcelableExtra(getString(R.string.recipe_object_android_widget));
+        } else {
+            response = Prefs.loadRecipe(this);
         }
-        bundle.putInt("recipeId",response.getId());
+        bundle.putInt(getString(R.string.recipe_id), response.getId());
         toolbar.setTitle(response.getName());
-        return  bundle;
+        return bundle;
     }
 
     @Override
     public void onArticleSelected(int position, List<Step> response) {
-        if(!tabletSize){
-        Intent intent = new Intent(this,StepsDetailActivity.class);
-        intent.putExtra("position",position);
-        intent.putExtra("response",response.get(position));
-        intent.putExtra("recipeId",response.get(position).getRecipeId());
-        intent.putExtra("list", (ArrayList<? extends Parcelable>) response);
-        startActivity(intent);}
-        else{
+        if (!tabletSize) {
+            Intent intent = new Intent(this, StepsDetailActivity.class);
+            intent.putExtra(getString(R.string.position), position);
+            intent.putExtra(getString(R.string.response), response.get(position));
+            intent.putExtra(getString(R.string.recipe_id), response.get(position).getRecipeId());
+            intent.putExtra(getString(R.string.list), (ArrayList<? extends Parcelable>) response);
+            startActivity(intent);
+        } else {
             frameLayout.setVisibility(View.VISIBLE);
             Bundle arguments = new Bundle();
             arguments.putParcelable(StepListFragment.STEP_KEY, response.get(position));
             StepListFragment fragment = new StepListFragment();
             fragment.setArguments(arguments);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.tablet_step_list_fragment_container, fragment, "STEP_LIST_CONTAINER");
+            ft.replace(R.id.tablet_step_list_fragment_container, fragment, getString(R.string.step_list_container));
             ft.commit();
         }
     }
@@ -176,11 +163,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
         inflater.inflate(R.menu.recipe_info, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add_to_widget) {
             AppWidgetService.updateWidget(this, response);
-            Toast.makeText(getApplicationContext(),"Updated Widget",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.Updated_Widget), Toast.LENGTH_SHORT).show();
             return true;
         } else
             return super.onOptionsItemSelected(item);
@@ -189,8 +177,5 @@ public class RecipeDetailActivity extends AppCompatActivity implements OnHeadlin
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-     if(tabletSize){
-      Log.e("config","changed");
-     }
     }
 }

@@ -44,14 +44,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         if (mData.get(position).getName() == null)
             holder.recipeName.setText(R.string.na);
         else
-            holder.recipeName.setText(mData.get(position).getName().toString());
+            holder.recipeName.setText(mData.get(position).getName());
 
         if (mData.get(position).getServings() == null)
             holder.recipeServings.setText(R.string.na);
         else
-            holder.recipeServings.setText("Servings: "+String.valueOf(mData.get(position).getServings()));
-        if(mData.get(position).getImage()==null || mData.get(position).getImage()=="" || TextUtils.isEmpty(mData.get(position).getImage())){
-            switch (mData.get(position).getId()){
+            holder.recipeServings.setText(context.getString(R.string.servings) + String.valueOf(mData.get(position).getServings()));
+        if (mData.get(position).getImage() == null || mData.get(position).getImage().equals("") || TextUtils.isEmpty(mData.get(position).getImage())) {
+            switch (mData.get(position).getId()) {
                 case 1:
                     Picasso.with(context)
                             .load(R.drawable.no_image_1)
@@ -81,9 +81,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                             .into(holder.recipeImage);
                     break;
             }
-
-                           }
-        else{
+        } else {
             Picasso.with(context)
                     .load(mData.get(position).getImage())
                     .into(holder.recipeImage);
@@ -105,10 +103,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View view) {
@@ -116,6 +113,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
 
     }
+
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }

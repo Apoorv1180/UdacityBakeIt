@@ -1,6 +1,5 @@
 package com.example.apoorvdubey.bakeit.view.fragment;
 
-
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,14 +7,14 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.apoorvdubey.bakeit.R;
 import com.example.apoorvdubey.bakeit.service.model.Step;
@@ -68,6 +67,7 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
     private long mCurrentPosition = 0;
     private boolean mPlayWhenReady = true;
     private boolean tabletSize;
+
     public StepListFragment() {
     }
 
@@ -79,10 +79,11 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
         if (getArguments() != null && getArguments().containsKey(STEP_KEY)) {
             mStep = getArguments().getParcelable(STEP_KEY);
         }
-        if(!tabletSize)
-        ((StepsDetailActivity) getActivity()).setActivityListener(StepListFragment.this);
+        if (!tabletSize)
+            ((StepsDetailActivity) getActivity()).setActivityListener(StepListFragment.this);
         else
-            ((RecipeDetailActivity) getActivity()).setActivityListener(StepListFragment.this);    }
+            ((RecipeDetailActivity) getActivity()).setActivityListener(StepListFragment.this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,18 +94,15 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             mCurrentPosition = savedInstanceState.getLong(POSITION_KEY);
             mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
         }
-
         unbinder = ButterKnife.bind(this, rootView);
-
         mTvInstructions.setText(mStep.getDescription());
         setupImageView();
-
         return rootView;
     }
 
     private void setupImageView() {
         mIvThumbnail.setVisibility(View.VISIBLE);
-        if(mStep.getThumbnailURL().isEmpty() || mStep.getThumbnailURL().equals("") || mStep.getThumbnailURL() == null){
+        if (mStep.getThumbnailURL().isEmpty() || mStep.getThumbnailURL().equals("") || mStep.getThumbnailURL() == null) {
             mInstructionsContainer.setVisibility(View.VISIBLE);
             Picasso.with(getActivity())
                     .load(R.drawable.chef)
@@ -112,7 +110,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
                     .error(R.drawable.chef)
                     .into(mIvThumbnail);
         }
-
         // Show thumbnail if url exists
         else {
             Picasso.with(getActivity())
@@ -133,35 +130,30 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             mInstructionsContainer.setVisibility(View.VISIBLE);
         }
         checkOrientation();
-
-
     }
 
     private void checkOrientation() {
         String orientation = getScreenOrientation();
-        if(orientation.equals("ORIENTATION_LANDSCAPE")){
-            if(mExoPlayer!=null){
+        if (orientation.equals(getString(R.string.landscape))) {
+            if (mExoPlayer != null) {
                 mInstructionsContainer.setVisibility(GONE);
                 mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mExoPlayerView.getLayoutParams();
-                params.width=params.MATCH_PARENT;
-                params.height=params.MATCH_PARENT;
+                params.width = params.MATCH_PARENT;
+                params.height = params.MATCH_PARENT;
                 mExoPlayerView.setLayoutParams(params);
-            }}
-        else {
+            }
+        } else {
             final float scale = getContext().getResources().getDisplayMetrics().density;
             int pixels = (int) (250 * scale + 0.5f);
             mInstructionsContainer.setVisibility(View.VISIBLE);
             mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mExoPlayerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=pixels;
+            params.width = params.MATCH_PARENT;
+            params.height = pixels;
             mExoPlayerView.setLayoutParams(params);
-
-
         }
     }
-
 
     @Override
     public void onPause() {
@@ -169,19 +161,15 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
         releasePlayer();
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putLong(POSITION_KEY, mCurrentPosition);
         outState.putBoolean(PLAY_WHEN_READY_KEY, mPlayWhenReady);
     }
@@ -206,7 +194,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
             // onRestore
             if (mCurrentPosition != 0)
                 mExoPlayer.seekTo(mCurrentPosition);
-
             mExoPlayer.setPlayWhenReady(mPlayWhenReady);
             mExoPlayerView.setVisibility(View.VISIBLE);
         }
@@ -225,7 +212,6 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
         }
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -242,30 +228,30 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         String orientation = getScreenOrientation();
-        if(orientation.equals("ORIENTATION_LANDSCAPE")){
-            if(mExoPlayer!=null){
+        if (orientation.equals(getString(R.string.landscape))) {
+            if (mExoPlayer != null) {
                 mInstructionsContainer.setVisibility(GONE);
                 mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mExoPlayerView.getLayoutParams();
-                params.width=params.MATCH_PARENT;
-                params.height=params.MATCH_PARENT;
+                params.width = params.MATCH_PARENT;
+                params.height = params.MATCH_PARENT;
                 mExoPlayerView.setLayoutParams(params);
-            }}
-        else {
+            }
+        } else {
             final float scale = getContext().getResources().getDisplayMetrics().density;
             int pixels = (int) (250 * scale + 0.5f);
             mInstructionsContainer.setVisibility(View.VISIBLE);
             mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mExoPlayerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=pixels;
+            params.width = params.MATCH_PARENT;
+            params.height = pixels;
             mExoPlayerView.setLayoutParams(params);
         }
     }
 
     @Override
     public void doSomethingInFragment(int position) {
-        if(!isVisible()) {
+        if (!isVisible()) {
             if (mExoPlayer != null) {
                 mPlayWhenReady = mExoPlayer.getPlayWhenReady();
                 mCurrentPosition = mExoPlayer.getCurrentPosition();
@@ -278,9 +264,9 @@ public class StepListFragment extends Fragment implements ListenFromActivity {
 
     private String getScreenOrientation() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            return "ORIENTATION_PORTRAIT";
+            return getString(R.string.orientation_portrait);
         else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            return "ORIENTATION_LANDSCAPE";
+            return getString(R.string.orientation_landscape);
         else
             return "";
     }

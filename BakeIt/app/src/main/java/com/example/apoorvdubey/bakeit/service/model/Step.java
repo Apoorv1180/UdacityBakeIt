@@ -18,7 +18,6 @@ public class Step implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "stepId")
     public Integer stepId;
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -36,7 +35,6 @@ public class Step implements Parcelable {
     private String thumbnailURL;
     @ColumnInfo(name = "recipeId")
     public Integer recipeId;
-
 
     protected Step(Parcel in) {
         if (in.readByte() == 0) {
@@ -113,7 +111,6 @@ public class Step implements Parcelable {
     }
 
     public Integer getStepId() {
-
         return stepId;
     }
 

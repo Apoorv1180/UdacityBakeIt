@@ -27,6 +27,24 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="activity_horizontal_margin">16dp</dimen>
 
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="hund_dp">100dp</dimen>
+    <dimen name="two_hundred_dp">200dp</dimen>
+    <dimen name="toolbar_height">250dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="one_thirty_dp">130dp</dimen>
+    <dimen name="zeropx">0px</dimen>
+    <dimen name="one_dp">1dp</dimen>
+    <dimen name="four_dp">4dp</dimen>
+    <dimen name="forteen_sp">14sp</dimen>
+    <dimen name="twentysix_dp">26dp</dimen>
+    <dimen name="two_fifty_dp">250dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="foirty_dp">40dp</dimen>
+    <dimen name="fifteen_sp">15sp</dimen>
+    <dimen name="one_fifty_dp">150dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="forty_dpp">40dp</dimen>
+    <dimen name="threefifty_dp">350dp</dimen>
 
     <bool name="is_tablet">false</bool>
 </resources>

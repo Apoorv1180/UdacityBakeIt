@@ -9,7 +9,6 @@ import android.arch.persistence.room.Update;
 
 import com.example.apoorvdubey.bakeit.service.model.Ingredient;
 
-
 import java.util.List;
 
 @Dao
@@ -25,5 +24,4 @@ public interface IngredientsDao {
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     void updateIngredient(Ingredient result);
-
 }

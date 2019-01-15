@@ -19,10 +19,7 @@ public interface RecipeResponseDao {
 
     @Query("SELECT * FROM RecipeResponse where name =(:name)")
     LiveData<RecipeResponse> getRecipeByName(String name);
-    /*
-        @Query("SELECT * FROM result where popular =(:param)")
-        LiveData<List<DetailResult>> loadAllMovies(String param);
-    */
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertRecipe(RecipeResponse result);
 

@@ -4,8 +4,8 @@
     android:id="@+id/ingredient_item_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
     android:gravity="center_vertical"
     android:textColor="@color/colorAccent"
     android:textSize="@dimen/text_medium" />
