@@ -45,6 +45,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="five_dp">5dp</dimen>
     <dimen name="forty_dpp">40dp</dimen>
     <dimen name="threefifty_dp">350dp</dimen>
+    <dimen name="fifty_dp">50dp</dimen>
 
     <bool name="is_tablet">false</bool>
 </resources>

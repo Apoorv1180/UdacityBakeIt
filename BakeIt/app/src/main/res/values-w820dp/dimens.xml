@@ -9,5 +9,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="activity_horizontal_margin">64dp</dimen>
 
-    <bool name="is_tablet">true</bool>
+    <bool name="is_tablet">false</bool>
 </resources>

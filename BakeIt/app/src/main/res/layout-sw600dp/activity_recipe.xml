@@ -32,11 +32,30 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
+    <ProgressBar
+        android:layout_width="@dimen/fifty_dp"
+        android:layout_height="@dimen/fifty_dp"
+        android:id="@+id/progress_bar"
+        android:visibility="visible"
+        android:layout_gravity="center_horizontal"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recipe_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/empty_text_view_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="@dimen/fifteen_sp"
+        android:visibility="gone"
+        android:text="@string/recipes_not_available"/>
 
 </LinearLayout>

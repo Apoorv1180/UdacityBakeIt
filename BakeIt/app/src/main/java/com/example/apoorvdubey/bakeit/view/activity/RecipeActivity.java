@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.apoorvdubey.bakeit.R;
@@ -29,9 +30,11 @@ import butterknife.ButterKnife;
 public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.ItemClickListener {
     @BindView(R.id.recipe_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.empty_text_view)
+    @Nullable @BindView(R.id.empty_text_view_recipe)
     TextView emptyTextView;
     RecipeAdapter recipeAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -39,11 +42,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
     List<RecipeResponse> recipeResponseList = new ArrayList<>();
     boolean tabletSize;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
         tabletSize = getResources().getBoolean(R.bool.is_tablet);
         setToolBar();
         setRecyclerView();
@@ -71,12 +77,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
             gridLayoutManager = new GridLayoutManager(this, 2);
             recyclerView.setLayoutManager(gridLayoutManager);
         }
+        recyclerView.setVisibility(View.GONE);
         recipeAdapter = new RecipeAdapter(this, recipeResponseList);
         recipeAdapter.setClickListener(this);
         recyclerView.setAdapter(recipeAdapter);
     }
 
     private void observeViewModel(RecipeListViewModel viewModel) {
+        progressBar.setVisibility(View.VISIBLE);
         viewModel.getRecipeListObservable().observe(this, new Observer<List<RecipeResponse>>() {
             @Override
             public void onChanged(@Nullable List<RecipeResponse> result) {
@@ -85,15 +93,18 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
                         recipeResponseList.addAll(result);
                         recipeAdapter.notifyDataSetChanged();
                         recyclerView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         emptyTextView.setVisibility(View.GONE);
                     }
                     else{
                         emptyTextView.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             }
         });
+
     }
 
     @Override
